@@ -229,3 +229,54 @@ extension Query {
         return .init(database, parentPath: parentPath, collectionID: collectionID, allDescendants: allDescendants, predicates: predicates)
     }
 }
+
+extension Query {
+    /// Specifies the offset of the returned results.
+    /// - Parameter value: The number of documents to skip before starting to return results.
+    /// - Returns: A new Query with the offset applied.
+    public func offset(_ value: Int) -> Query {
+        var predicates = self.predicates
+        predicates.append(.offset(value))
+        return .init(database, parentPath: parentPath, collectionID: collectionID, allDescendants: allDescendants, predicates: predicates)
+    }
+
+    /// Creates and returns a new Query that starts at the provided fields relative to the order of the query.
+    /// The values must correspond to the order by fields of the query.
+    /// - Parameter values: The field values to start this query at, in order of the query's order by.
+    /// - Returns: A new Query starting at the provided values (inclusive).
+    public func start(at values: Any...) -> Query {
+        var predicates = self.predicates
+        predicates.append(.startAt(values))
+        return .init(database, parentPath: parentPath, collectionID: collectionID, allDescendants: allDescendants, predicates: predicates)
+    }
+
+    /// Creates and returns a new Query that starts after the provided fields relative to the order of the query.
+    /// The values must correspond to the order by fields of the query.
+    /// - Parameter values: The field values to start this query after, in order of the query's order by.
+    /// - Returns: A new Query starting after the provided values (exclusive).
+    public func start(after values: Any...) -> Query {
+        var predicates = self.predicates
+        predicates.append(.startAfter(values))
+        return .init(database, parentPath: parentPath, collectionID: collectionID, allDescendants: allDescendants, predicates: predicates)
+    }
+
+    /// Creates and returns a new Query that ends at the provided fields relative to the order of the query.
+    /// The values must correspond to the order by fields of the query.
+    /// - Parameter values: The field values to end this query at, in order of the query's order by.
+    /// - Returns: A new Query ending at the provided values (inclusive).
+    public func end(at values: Any...) -> Query {
+        var predicates = self.predicates
+        predicates.append(.endAt(values))
+        return .init(database, parentPath: parentPath, collectionID: collectionID, allDescendants: allDescendants, predicates: predicates)
+    }
+
+    /// Creates and returns a new Query that ends before the provided fields relative to the order of the query.
+    /// The values must correspond to the order by fields of the query.
+    /// - Parameter values: The field values to end this query before, in order of the query's order by.
+    /// - Returns: A new Query ending before the provided values (exclusive).
+    public func end(before values: Any...) -> Query {
+        var predicates = self.predicates
+        predicates.append(.endBefore(values))
+        return .init(database, parentPath: parentPath, collectionID: collectionID, allDescendants: allDescendants, predicates: predicates)
+    }
+}

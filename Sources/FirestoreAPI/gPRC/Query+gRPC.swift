@@ -89,6 +89,28 @@ extension Query {
                     query.where = predicate.makeFilter(database: database, collectionID: collectionID)!
                 case .isGreaterThanOrEqualToDocumentID(_):
                     query.where = predicate.makeFilter(database: database, collectionID: collectionID)!
+                case .offset(let value):
+                    query.offset = Int32(value)
+                case .startAt(let values):
+                    query.startAt = Google_Firestore_V1_Cursor.with {
+                        $0.values = values.compactMap { DocumentData.getValue($0) }
+                        $0.before = true
+                    }
+                case .startAfter(let values):
+                    query.startAt = Google_Firestore_V1_Cursor.with {
+                        $0.values = values.compactMap { DocumentData.getValue($0) }
+                        $0.before = false
+                    }
+                case .endAt(let values):
+                    query.endAt = Google_Firestore_V1_Cursor.with {
+                        $0.values = values.compactMap { DocumentData.getValue($0) }
+                        $0.before = false
+                    }
+                case .endBefore(let values):
+                    query.endAt = Google_Firestore_V1_Cursor.with {
+                        $0.values = values.compactMap { DocumentData.getValue($0) }
+                        $0.before = true
+                    }
                 }
             }
         }

@@ -16,6 +16,8 @@ public enum QueryPredicate {
         case unaryFilter
         case limit
         case order
+        case cursor
+        case offset
     }
 
     // Field
@@ -34,6 +36,13 @@ public enum QueryPredicate {
     case limitToLast(_ value: Int)
     case or(_ filters: [QueryPredicate])
     case and(_ filters: [QueryPredicate])
+
+    // Cursor & Offset
+    case offset(_ value: Int)
+    case startAt(_ values: [Any])
+    case startAfter(_ values: [Any])
+    case endAt(_ values: [Any])
+    case endBefore(_ values: [Any])
 
     // DocumentID
     case isEqualToDocumentID(_ value: String)
@@ -64,6 +73,11 @@ public enum QueryPredicate {
             case .orderBy(_, _): return .order
             case .limitTo(_): return .limit
             case .limitToLast(_): return .limit
+            case .offset(_): return .offset
+            case .startAt(_): return .cursor
+            case .startAfter(_): return .cursor
+            case .endAt(_): return .cursor
+            case .endBefore(_): return .cursor
             case .isEqualToDocumentID(_): return .fieldFilter
             case .isNotEqualToDocumentID(_): return .fieldFilter
             case .isInDocumentID(_): return .fieldFilter
