@@ -94,4 +94,75 @@ struct PredicateTests {
         #expect(field == "test")
         #expect(intValue == 0)
     }
+
+    @Test("Predicate offset")
+    func testOffset() {
+        let predicate = QueryPredicate.offset(10)
+
+        guard case .offset(let value) = predicate else {
+            Issue.record("Expected offset predicate")
+            return
+        }
+
+        #expect(value == 10)
+        #expect(predicate.type == .offset)
+    }
+
+    @Test("Predicate startAt")
+    func testStartAt() {
+        let predicate = QueryPredicate.startAt([100, "test"])
+
+        guard case .startAt(let values) = predicate else {
+            Issue.record("Expected startAt predicate")
+            return
+        }
+
+        #expect(values.count == 2)
+        #expect((values[0] as? Int) == 100)
+        #expect((values[1] as? String) == "test")
+        #expect(predicate.type == .cursor)
+    }
+
+    @Test("Predicate startAfter")
+    func testStartAfter() {
+        let predicate = QueryPredicate.startAfter([200])
+
+        guard case .startAfter(let values) = predicate else {
+            Issue.record("Expected startAfter predicate")
+            return
+        }
+
+        #expect(values.count == 1)
+        #expect((values[0] as? Int) == 200)
+        #expect(predicate.type == .cursor)
+    }
+
+    @Test("Predicate endAt")
+    func testEndAt() {
+        let predicate = QueryPredicate.endAt([500])
+
+        guard case .endAt(let values) = predicate else {
+            Issue.record("Expected endAt predicate")
+            return
+        }
+
+        #expect(values.count == 1)
+        #expect((values[0] as? Int) == 500)
+        #expect(predicate.type == .cursor)
+    }
+
+    @Test("Predicate endBefore")
+    func testEndBefore() {
+        let predicate = QueryPredicate.endBefore([300, "value"])
+
+        guard case .endBefore(let values) = predicate else {
+            Issue.record("Expected endBefore predicate")
+            return
+        }
+
+        #expect(values.count == 2)
+        #expect((values[0] as? Int) == 300)
+        #expect((values[1] as? String) == "value")
+        #expect(predicate.type == .cursor)
+    }
 }
